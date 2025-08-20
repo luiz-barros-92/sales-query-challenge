@@ -27,14 +27,14 @@ public class SaleService {
 		return new SaleMinDTO(entity);
 	}
 	
-	public Page<SaleReportDTO> getSalesReport(String minDateStr, String maxDateStr, String sellerName, Pageable pageable) {
+	public Page<SaleReportDTO> getSalesReport(String minDate, String maxDate, String name, Pageable pageable) {
 		LocalDate today = LocalDate.ofInstant(Instant.now(), ZoneId.systemDefault());
-		LocalDate maxDate = (maxDateStr == null || maxDateStr.isEmpty()) ? today : LocalDate.parse(maxDateStr);
-		LocalDate minDate = (minDateStr == null || minDateStr.isEmpty()) ? maxDate.minusYears(1L) : LocalDate.parse(minDateStr);
-		if (sellerName == null) {
-	        sellerName = "";
+		LocalDate lastDate = (maxDate == null || maxDate.isEmpty()) ? today : LocalDate.parse(maxDate);
+		LocalDate firstDate = (minDate == null || minDate.isEmpty()) ? lastDate.minusYears(1L) : LocalDate.parse(minDate);
+		if (name == null) {
+	        name = "";
 	    }
-		Page<SaleReportDTO> result = repository.searchSaleReport(minDate, maxDate, sellerName, pageable);
+		Page<SaleReportDTO> result = repository.searchSaleReport(firstDate, lastDate, name, pageable);
 		return result;
 	}
 }
